@@ -1,18 +1,21 @@
 package com.pkj.wow.multitheme;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
@@ -24,7 +27,7 @@ import com.pkj.wow.multitheme.view.ThemeView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScrollingActivity extends BaseActivity implements View.OnClickListener{
+public class ScrollingActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private FabProgressLayout mFabProgressLayout;
 
@@ -38,15 +41,21 @@ public class ScrollingActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_scrolling);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // get the bottom sheet view
+
+
+
+
+
+
         LinearLayout llBottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
 
         // init the bottom sheet behavior
         mBottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
+
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -70,8 +79,19 @@ public class ScrollingActivity extends BaseActivity implements View.OnClickListe
             }
         });
 
-        mFabProgressLayout = findViewById(R.id.fab_progress);
-        mFabProgressLayout.setOnClickListener(this);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawer.openDrawer(Gravity.LEFT);
+            }
+        });
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        // mFabProgressLayout = findViewById(R.id.fab_progress);
+       // mFabProgressLayout.setOnClickListener(this);
 
         SwitchCompat switchCompat = findViewById(R.id.switch_dark_mode);
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -86,7 +106,7 @@ public class ScrollingActivity extends BaseActivity implements View.OnClickListe
             }
         });
 
-        mRecyclerView = findViewById(R.id.recyclerView);
+        mRecyclerView = findViewById(R.id.recyclerView1);
 
         mAdapter = new ThemeAdapter(mThemeList);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(),4);
@@ -147,10 +167,17 @@ public class ScrollingActivity extends BaseActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        return false;
+    }
+
+   /* @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.fab_progress :
+           /* case R.id.fab_progress :
                 mFabProgressLayout.startProgress();
                 mFabProgressLayout.postDelayed(new Runnable() {
                     @Override
@@ -158,7 +185,6 @@ public class ScrollingActivity extends BaseActivity implements View.OnClickListe
                         mFabProgressLayout.stopProgress();
                     }
                 },5000);
-                break;
-        }
-    }
+                break;*/
+
 }
